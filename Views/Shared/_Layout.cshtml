@@ -58,6 +58,7 @@
         </header>
         <main role="main" class="pb-3">
             @RenderBody()            
+            @RenderSection("Style", required: false)
             @RenderSection("Scripts", required: false)
         </main>
     </div>

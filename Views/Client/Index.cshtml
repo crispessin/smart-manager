@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Clientes";
     Layout = "_Layout";
+    var search = @ViewData["Search"]?.ToString();
+    var searchVisible = !string.IsNullOrEmpty(search);
 }
 @using X.PagedList
 @using X.PagedList.Mvc.Core
@@ -12,6 +14,26 @@
     </div>
     <div>
         <a href="@Url.Action("Create", "Client")" class="btn btn-primary">Adicionar Cliente</a>
+    </div>    
+</div>
+
+<div>
+    <button id="filter-btn" class="btn btn-primary">Filtrar</button>
+</div>
+
+<div id="search-area" style="display:@(searchVisible ? "block" : "none"); margin-top: 15px;">    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-20">
+                <form method="get" action="@Url.Action("Index", "Client")" class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <label for="search" class="visually-hidden">Pesquisar:</label>
+                        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome para pesquisar" value="@ViewData["Search"]" />
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-2">Pesquisar</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -62,7 +84,11 @@
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        $(document).ready(function () {           
+        $(document).ready(function () {
+            $('#filter-btn').click(function () {
+                $('#search-area').toggle();
+            });
+
             $('#select-all').click(function () {
                 var checked = this.checked;
                 $('.select-row').each(function () {

@@ -15,14 +15,21 @@ namespace SmartManager.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, string search)
         {
             int pageSize = 20;
             int pageNumber = (page ?? 1);
 
-            var clients = _context.Clients.AsNoTracking().OrderBy(c => c.Id);
+            var clientsQuery = _context.Clients.AsNoTracking();
 
-            return View(clients.ToPagedList(pageNumber, pageSize));
+            if (!string.IsNullOrEmpty(search))
+            {
+                clientsQuery = clientsQuery.Where(c => c.Name.ToUpper().Contains(search.ToUpper()));
+            }
+
+            ViewData["Search"] = search;
+
+            return View(clientsQuery.OrderBy(c => c.Id).ToPagedList(pageNumber, pageSize));
         }
 
         [HttpPost]
