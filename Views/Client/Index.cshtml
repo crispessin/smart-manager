@@ -1,0 +1,94 @@
+﻿@model PagedList<SmartManager.Models.Client>
+@{
+    ViewData["Title"] = "Clientes";
+    Layout = "_Layout";
+}
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="d-inline">Consulte seus Clientes cadastrados em sua Loja ou realize o cadastro de novos Clientes</h3>
+    </div>
+    <div>
+        <a href="@Url.Action("Create", "Client")" class="btn btn-primary">Adicionar Cliente</a>
+    </div>
+</div>
+
+<br/>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="select-all" /></th>
+            <th>Nome/Razão Social</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Data de Cadastro</th>
+            <th>Bloqueado</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="select-row" /></td>
+                <td>@client.Name</td>
+                <td>@client.Email</td>
+                <td>@client.Phone</td>
+                <td>@client.RegistrationDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <input type="checkbox" class="block-checkbox" data-client-id="@client.Id" @(client.IsBlocked ? "checked" : "") />
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", "Client", new { id = client.Id })" class="btn btn-secondary">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <div style="float: right">
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </div>
+
+    <div class="justify-content-center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { FunctionToTransformEachPageLink = (liTag, aTag) => { aTag.Attributes.Add("class", "page-link".ToString()); return aTag; }, LiElementClasses = new[] { "page-item" }, UlElementClasses = new[] { "pagination  justify-content-center" } })
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {           
+            $('#select-all').click(function () {
+                var checked = this.checked;
+                $('.select-row').each(function () {
+                    this.checked = checked;
+                });
+            });
+
+            $('.block-checkbox').change(function () {
+                var clientId = $(this).data('client-id');
+                var isBlocked = $(this).is(':checked');
+
+                $.ajax({
+                    url: '@Url.Action("ToggleBlock", "Client")',
+                    type: 'POST',
+                    data: {
+                        id: clientId,
+                        isBlocked: isBlocked
+                    },
+                    success: function (response) {
+                        console.log("Status de bloqueio atualizado com sucesso.");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Erro ao atualizar status de bloqueio.");
+                    }
+                });
+            });
+        });
+    </script>
+}
