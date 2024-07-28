@@ -1,0 +1,181 @@
+﻿@model SmartManager.Models.Client
+@{
+    ViewData["Title"] = "Editar Cliente";
+    Layout = "_Layout";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div>
+    <h2 class="text-center my-4 mg-b-5 mg-b-lg-8">Editar Cliente</h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form asp-action="Edit" id="editClientForm" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label for="Id">Id</label>
+                <input asp-for="Id" class="form-control" readonly />
+                <input asp-for="Id" type="hidden" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Name">Nome Cliente | Razão Social</label>
+                <input asp-for="Name" class="form-control" placeholder="Digite o nome ou a razão social do cliente" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Email">E-mail</label>
+                <input asp-for="Email" class="form-control" placeholder="Digite o e-mail do cliente" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Phone">Contato</label>
+                <input asp-for="Phone" class="form-control" placeholder="Digite o contato do cliente" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="PersonType">Tipo Pessoa</label>
+                <select asp-for="PersonType" class="form-control" id="PersonType">
+                    <option value="">Selecione o tipo...</option>
+                    <option value="Jurídica">Jurídica</option>
+                    <option value="Física">Física</option>
+                </select>
+                <span asp-validation-for="PersonType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="DocumentNumber">Cpf/Cnpj</label>
+                <input asp-for="DocumentNumber" class="form-control" id="DocumentNumber" placeholder="Digite o documento do cliente" required />
+                <span asp-validation-for="DocumentNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3" id="GenderContainer" style="display:none;">
+                <label for="Gender">Gênero</label>
+                <select asp-for="Gender" class="form-control">
+                    <option value="">Selecione o gênero...</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Outro">Outro</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3" id="BirthDateContainer" style="display:none;">
+                <label for="BirthDate">Data de Nascimento</label>
+                <input asp-for="BirthDate" class="form-control" type="date" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3" id="InscricaoEstadualRequiredContainer">
+                <input type="checkbox" asp-for="InscricaoEstadualPF" id="InscricaoEstadualPF" />
+                <label for="InscricaoEstadualPF">Inscrição Estadual para Pessoa Física</label>
+            </div>
+
+            <div class="form-group mb-3" id="InscricaoEstadualContainer">
+                <label for="InscricaoEstadual">Inscrição Estadual</label>
+                <input asp-for="InscricaoEstadual" class="form-control" placeholder="Digite a Inscrição Estadual do cliente" />
+                <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Password">Senha (Deixe em branco se não quiser alterar)</label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="ConfirmPassword">Confirmação de Senha</label>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            
+            <input type="hidden" id="PasswordChanged" name="PasswordChanged" value="false" />
+
+            <button type="submit" class="btn btn-success btn-lg">Atualizar</button>
+            <a class="btn btn-secondary btn-lg" asp-controller="Client" asp-action="Index" role="button">Voltar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(function ($) {
+            $('#PersonType').change(function () {
+                var documentNumberField = $('#DocumentNumber');
+
+                if ($(this).val() === 'Física') {
+                    $('#GenderContainer').show();
+                    $('#BirthDateContainer').show();
+                    $('#InscricaoEstadualRequiredContainer').show();
+                    $('#InscricaoEstadualContainer').hide();
+                    documentNumberField.mask('000.000.000-00');
+                } else {
+                    $('#GenderContainer').hide();
+                    $('#BirthDateContainer').hide();
+                    $('#InscricaoEstadualRequiredContainer').hide();
+                    $('#InscricaoEstadualContainer').show();
+                    documentNumberField.mask('00.000.000/0000-00');
+                }
+            }).trigger('change');
+
+            $('#Password').on('input', function () {
+                $('#PasswordChanged').val('true');
+            });
+
+            $('#ConfirmPassword').on('input', function () {
+                $('#PasswordChanged').val('true');
+            });
+
+            $('#InscricaoEstadualPF').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#InscricaoEstadualContainer').show();
+                } else {
+                    $('#InscricaoEstadualContainer').hide();
+                }
+            });
+
+            if ($('#InscricaoEstadualPF').is(':checked')) {
+                $('#InscricaoEstadualContainer').show();
+            } else {
+                $('#InscricaoEstadualContainer').hide();
+            }
+
+            $('#ConfirmPassword').on('input', function () {
+                var password = $('#Password').val();
+                var confirmPassword = $(this).val();
+                if (password !== confirmPassword) {
+                    this.setCustomValidity('As senhas não conferem.');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    var forms = document.getElementsByTagName('form');
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        });
+    </script>
+}

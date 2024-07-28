@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SmartManager</title>
+    <link rel="stylesheet" href="~/css/mycsstheme.css"/>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            color: #212529;
+            text-decoration: none;
+        }
+
+        .navbar-brand:hover {
+            color: #007bff;
+        }
+
+        .container-fluid {
+            flex: 1;
+        }        
+
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 1rem 0;
+            width: 100%;
+        }
+
+        .footer {
+            position: relative;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">SmartManager</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main role="main" class="pb-3">
+            @RenderBody()            
+            @RenderSection("Style", required: false)
+            @RenderSection("Scripts", required: false)
+        </main>
+    </div>
+    <footer class="footer border-top text-muted">
+        <div class="container-fluid">
+            <span>&copy; 2024 - SmartManager</span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
