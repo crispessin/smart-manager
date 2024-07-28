@@ -65,7 +65,12 @@
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
 
-            <div class="form-group mb-3">
+            <div class="form-group mb-3" id="InscricaoEstadualRequiredContainer">
+                <input type="checkbox" asp-for="InscricaoEstadualPF" id="InscricaoEstadualPF" />
+                <label for="InscricaoEstadualPF">Inscrição Estadual para Pessoa Física</label>
+            </div>
+
+            <div class="form-group mb-3" id="InscricaoEstadualContainer">
                 <label for="InscricaoEstadual">Inscrição Estadual</label>
                 <input asp-for="InscricaoEstadual" class="form-control" placeholder="Digite a Inscrição Estadual do cliente" />
                 <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
@@ -102,13 +107,31 @@
                 if ($(this).val() === 'Física') {
                     $('#GenderContainer').show();
                     $('#BirthDateContainer').show();
+                    $('#InscricaoEstadualRequiredContainer').show();
+                    $('#InscricaoEstadualContainer').hide();
                     documentNumberField.mask('000.000.000-00');
                 } else {
                     $('#GenderContainer').hide();
                     $('#BirthDateContainer').hide();
+                    $('#InscricaoEstadualRequiredContainer').hide();
+                    $('#InscricaoEstadualContainer').show();                    
                     documentNumberField.mask('00.000.000/0000-00');
                 }
             }).trigger('change');
+
+            $('#InscricaoEstadualPF').change(function () {
+                if ($(this).is(':checked')) {                    
+                    $('#InscricaoEstadualContainer').show();
+                } else {                    
+                    $('#InscricaoEstadualContainer').hide();
+                }
+            });
+
+            if ($('#InscricaoEstadualPF').is(':checked')) {
+                $('#InscricaoEstadualContainer').show();
+            } else {
+                $('#InscricaoEstadualContainer').hide();
+            }
 
             $('#ConfirmPassword').on('input', function () {
                 var password = $('#Password').val();

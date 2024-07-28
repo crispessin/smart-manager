@@ -54,7 +54,7 @@ namespace SmartManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,IsBlocked,Gender,BirthDate,Password,ConfirmPassword")] Client client)
+        public async Task<IActionResult> Create([Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,InscricaoEstadualPF,IsBlocked,Gender,BirthDate,Password,ConfirmPassword")] Client client)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace SmartManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,IsBlocked,Gender,BirthDate,Password,ConfirmPassword")] Client client, bool PasswordChanged)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,InscricaoEstadualPF,IsBlocked,Gender,BirthDate,Password,ConfirmPassword")] Client client, bool PasswordChanged)
         {
             if (id != client.Id)
             {
@@ -147,7 +147,8 @@ namespace SmartManager.Controllers
                         existingClient.IsBlocked = client.IsBlocked;
                         existingClient.Gender = client.Gender;
                         existingClient.BirthDate = client.BirthDate;
-                        
+                        existingClient.InscricaoEstadualPF = client.InscricaoEstadualPF;
+
                         if (PasswordChanged && !string.IsNullOrWhiteSpace(client.Password) && client.Password == client.ConfirmPassword)
                         {                            
                             existingClient.Password = BCrypt.Net.BCrypt.HashPassword(client.Password);

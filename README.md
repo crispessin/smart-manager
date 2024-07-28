@@ -9,6 +9,7 @@ Foi desenvolvido como uma aplicação ASP.NET Core MVC 8.0 e o Entity Framework 
 * Projeto em ASP.NET Core MVC 8.0
 * Sqlite
 * EF Core
+* Bogus para geração de daos aleatórios par testes
 
 ## Como executar
 
@@ -31,7 +32,8 @@ O projeto roda as migrations automaticamente.
 Para gerar novas migrations utilizando o Console do Gerenciador de Pacotes execute:
 
 ```
-Add-Migration "init" -o Persistence\Migrations
+dotnet ef migrations add InitialCreate
+dotnet ef database update
 ```
 
 ### Como executar as Migrations manualmente

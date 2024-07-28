@@ -27,10 +27,11 @@ namespace SmartManager.Models
         [Required(ErrorMessage = "CPF/CNPJ é obrigatório")]        
         [DocumentValidation]
         public string DocumentNumber { get; set; }
+        
+        [InscricaoEstadualValidation]
+        public string? InscricaoEstadual { get; set; }
 
-        [Required(ErrorMessage = "Inscrição Estadual é obrigatória")]
-        [StringLength(12, ErrorMessage = "Inscrição Estadual pode ter no máximo 12 caracteres")]
-        public string InscricaoEstadual { get; set; }
+        public bool InscricaoEstadualPF { get; set; }
 
         public bool IsBlocked { get; set; }
 
@@ -48,5 +49,6 @@ namespace SmartManager.Models
 
         [DataType(DataType.Date)]
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
+        
     }
 }

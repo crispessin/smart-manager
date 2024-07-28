@@ -9,10 +9,11 @@
 <div>
     <h2 class="text-center my-4 mg-b-5 mg-b-lg-8">Editar Cliente</h2>
 </div>
+
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <form asp-action="Edit" id="editClientForm" class="needs-validation" novalidate>
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group mb-3">
                 <label for="Id">Id</label>
@@ -23,25 +24,25 @@
 
             <div class="form-group mb-3">
                 <label for="Name">Nome Cliente | Razão Social</label>
-                <input asp-for="Name" class="form-control" placeholder="Digite o nome ou a razão social do cliente" required />
+                <input asp-for="Name" class="form-control" placeholder="Digite o nome ou a razão social do cliente" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label for="Email">E-mail</label>
-                <input asp-for="Email" class="form-control" placeholder="Digite o e-mail do cliente" required />
+                <input asp-for="Email" class="form-control" placeholder="Digite o e-mail do cliente" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label for="Phone">Contato</label>
-                <input asp-for="Phone" class="form-control" placeholder="Digite o contato do cliente" required />
+                <input asp-for="Phone" class="form-control" placeholder="Digite o contato do cliente" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label for="PersonType">Tipo Pessoa</label>
-                <select asp-for="PersonType" class="form-control" id="PersonType" required>
+                <select asp-for="PersonType" class="form-control" id="PersonType">
                     <option value="">Selecione o tipo...</option>
                     <option value="Jurídica">Jurídica</option>
                     <option value="Física">Física</option>
@@ -72,7 +73,12 @@
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
 
-            <div class="form-group mb-3">
+            <div class="form-group mb-3" id="InscricaoEstadualRequiredContainer">
+                <input type="checkbox" asp-for="InscricaoEstadualPF" id="InscricaoEstadualPF" />
+                <label for="InscricaoEstadualPF">Inscrição Estadual para Pessoa Física</label>
+            </div>
+
+            <div class="form-group mb-3" id="InscricaoEstadualContainer">
                 <label for="InscricaoEstadual">Inscrição Estadual</label>
                 <input asp-for="InscricaoEstadual" class="form-control" placeholder="Digite a Inscrição Estadual do cliente" />
                 <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
@@ -92,10 +98,8 @@
             
             <input type="hidden" id="PasswordChanged" name="PasswordChanged" value="false" />
 
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-success btn-lg">Atualizar</button>
-                <a class="btn btn-secondary btn-lg" asp-controller="Client" asp-action="Index" role="button">Voltar</a>
-            </div>
+            <button type="submit" class="btn btn-success btn-lg">Atualizar</button>
+            <a class="btn btn-secondary btn-lg" asp-controller="Client" asp-action="Index" role="button">Voltar</a>
         </form>
     </div>
 </div>
@@ -106,17 +110,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function ($) {
             $('#PersonType').change(function () {
                 var documentNumberField = $('#DocumentNumber');
 
                 if ($(this).val() === 'Física') {
                     $('#GenderContainer').show();
                     $('#BirthDateContainer').show();
+                    $('#InscricaoEstadualRequiredContainer').show();
+                    $('#InscricaoEstadualContainer').hide();
                     documentNumberField.mask('000.000.000-00');
                 } else {
                     $('#GenderContainer').hide();
                     $('#BirthDateContainer').hide();
+                    $('#InscricaoEstadualRequiredContainer').hide();
+                    $('#InscricaoEstadualContainer').show();
                     documentNumberField.mask('00.000.000/0000-00');
                 }
             }).trigger('change');
@@ -128,6 +136,20 @@
             $('#ConfirmPassword').on('input', function () {
                 $('#PasswordChanged').val('true');
             });
+
+            $('#InscricaoEstadualPF').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#InscricaoEstadualContainer').show();
+                } else {
+                    $('#InscricaoEstadualContainer').hide();
+                }
+            });
+
+            if ($('#InscricaoEstadualPF').is(':checked')) {
+                $('#InscricaoEstadualContainer').show();
+            } else {
+                $('#InscricaoEstadualContainer').hide();
+            }
 
             $('#ConfirmPassword').on('input', function () {
                 var password = $('#Password').val();

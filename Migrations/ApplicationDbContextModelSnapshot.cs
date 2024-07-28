@@ -27,12 +27,10 @@ namespace SmartManager.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConfirmPassword")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
-                        .HasMaxLength(14)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -44,9 +42,10 @@ namespace SmartManager.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("InscricaoEstadual")
-                        .IsRequired()
-                        .HasMaxLength(12)
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("InscricaoEstadualPF")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("INTEGER");
@@ -57,7 +56,6 @@ namespace SmartManager.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("TEXT");
 

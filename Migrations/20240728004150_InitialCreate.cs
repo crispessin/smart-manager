@@ -21,13 +21,14 @@ namespace SmartManager.Migrations
                     Email = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
                     Phone = table.Column<string>(type: "TEXT", nullable: false),
                     PersonType = table.Column<string>(type: "TEXT", nullable: false),
-                    DocumentNumber = table.Column<string>(type: "TEXT", maxLength: 14, nullable: false),
-                    InscricaoEstadual = table.Column<string>(type: "TEXT", maxLength: 12, nullable: false),
+                    DocumentNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    InscricaoEstadual = table.Column<string>(type: "TEXT", nullable: true),
+                    InscricaoEstadualPF = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsBlocked = table.Column<bool>(type: "INTEGER", nullable: false),
                     Gender = table.Column<string>(type: "TEXT", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Password = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
-                    ConfirmPassword = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
+                    ConfirmPassword = table.Column<string>(type: "TEXT", nullable: true),
                     RegistrationDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
