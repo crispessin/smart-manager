@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartManager.Models
 {
     public class Client
-    {
-        public const string Isento = "Isento";
-
+    {        
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Nome do Cliente/Razão Social é obrigatório")]
@@ -33,6 +32,8 @@ namespace SmartManager.Models
 
         public bool InscricaoEstadualPF { get; set; }
 
+        public bool InscricaoEstadualIsento { get; set; }
+
         public bool IsBlocked { get; set; }
 
         [GenderValidation]
@@ -43,7 +44,8 @@ namespace SmartManager.Models
 
         [StringLength(15, MinimumLength = 8, ErrorMessage = "Senha deve ter entre 8 e 15 caracteres")]
         public string? Password { get; set; }
-        
+
+        [NotMapped]
         [Compare("Password", ErrorMessage = "As senhas não conferem")]
         public string? ConfirmPassword { get; set; }
 

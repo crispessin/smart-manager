@@ -24,11 +24,11 @@ namespace SmartManager.Migrations
                     DocumentNumber = table.Column<string>(type: "TEXT", nullable: false),
                     InscricaoEstadual = table.Column<string>(type: "TEXT", nullable: true),
                     InscricaoEstadualPF = table.Column<bool>(type: "INTEGER", nullable: false),
+                    InscricaoEstadualIsento = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsBlocked = table.Column<bool>(type: "INTEGER", nullable: false),
                     Gender = table.Column<string>(type: "TEXT", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Password = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
-                    ConfirmPassword = table.Column<string>(type: "TEXT", nullable: true),
+                    Password = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
                     RegistrationDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

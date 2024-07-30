@@ -15,6 +15,7 @@ namespace SmartManager.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(int? page, string search)
         {
             int pageSize = 20;
@@ -54,7 +55,7 @@ namespace SmartManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,InscricaoEstadualPF,IsBlocked,Gender,BirthDate,Password,ConfirmPassword")] Client client)
+        public async Task<IActionResult> Create([Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,InscricaoEstadualPF,InscricaoEstadualIsento,IsBlocked,Gender,BirthDate,Password,ConfirmPassword,IsBlocked")] Client client)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +67,7 @@ namespace SmartManager.Controllers
                 {
                     ModelState.AddModelError("DocumentNumber", "O CPF/CNPJ já está vinculado a outro Comprador.");
                 }
-                if (!string.IsNullOrEmpty(client.InscricaoEstadual) && !client.InscricaoEstadual.Equals(Client.Isento) && _context.Clients.Any(c => c.InscricaoEstadual == client.InscricaoEstadual))
+                if (!string.IsNullOrEmpty(client.InscricaoEstadual) && !client.InscricaoEstadualIsento && _context.Clients.Any(c => c.InscricaoEstadual == client.InscricaoEstadual))
                 {
                     ModelState.AddModelError("InscricaoEstadual", "A Inscrição Estadual já está vinculada a outro Comprador.");
                 }
@@ -105,7 +106,7 @@ namespace SmartManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,InscricaoEstadualPF,IsBlocked,Gender,BirthDate,Password,ConfirmPassword")] Client client, bool PasswordChanged)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Phone,PersonType,DocumentNumber,InscricaoEstadual,InscricaoEstadualPF,InscricaoEstadualIsento,IsBlocked,Gender,BirthDate,Password,ConfirmPassword,IsBlocked")] Client client, bool PasswordChanged)
         {
             if (id != client.Id)
             {
@@ -123,7 +124,7 @@ namespace SmartManager.Controllers
                 {
                     ModelState.AddModelError("DocumentNumber", "O CPF/CNPJ já está vinculado a outro Comprador.");
                 }
-                if (!string.IsNullOrEmpty(client.InscricaoEstadual) && _context.Clients.Any(c => c.InscricaoEstadual == client.InscricaoEstadual && c.Id != client.Id))
+                if (!string.IsNullOrEmpty(client.InscricaoEstadual) && !client.InscricaoEstadualIsento && _context.Clients.Any(c => c.InscricaoEstadual == client.InscricaoEstadual && c.Id != client.Id))
                 {
                     ModelState.AddModelError("InscricaoEstadual", "A Inscrição Estadual já está vinculada a outro Comprador.");
                 }
@@ -148,11 +149,13 @@ namespace SmartManager.Controllers
                         existingClient.Gender = client.Gender;
                         existingClient.BirthDate = client.BirthDate;
                         existingClient.InscricaoEstadualPF = client.InscricaoEstadualPF;
+                        existingClient.IsBlocked = client.IsBlocked;
+                        existingClient.InscricaoEstadualIsento = client.InscricaoEstadualIsento;
 
                         if (PasswordChanged && !string.IsNullOrWhiteSpace(client.Password) && client.Password == client.ConfirmPassword)
                         {                            
                             existingClient.Password = BCrypt.Net.BCrypt.HashPassword(client.Password);
-                        }
+                        }                        
 
                         _context.Clients.Update(existingClient);
 

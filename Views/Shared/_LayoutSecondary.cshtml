@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body>
+<body style="background:#f8f9fa">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -25,9 +25,10 @@
             </div>
         </nav>
     </header>
-    <main role="main" class="pb-3 container-fluid">
+    <main role="main" class="pb-3">
         @RenderBody()
         @RenderSection("Style", required: false)
+        @RenderSection("Scripts", required: false)
     </main>
     <footer class="footer border-top text-muted">
         <div class="container-fluid">
@@ -35,11 +36,8 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery-3.7.1.js"></script>
-    <script src="~/lib/jquery/dist/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/data-table/dist/js/dataTables.js"></script>
-    <script src="~/lib/data-table/dist/js/dataTables.bootstrap5.js"></script>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

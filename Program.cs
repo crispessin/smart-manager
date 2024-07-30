@@ -2,6 +2,8 @@ using Bogus;
 using Microsoft.EntityFrameworkCore;
 using SmartManager.Data;
 using SmartManager.Models;
+using Bogus.Extensions.Brazil;
+using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +40,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Client}/{action=Index}/{id?}");
 
-// SeedDatabase(app);
+SeedDatabase(app);
 
 app.Run();
 
@@ -54,18 +56,17 @@ void SeedDatabase(IHost app)
         // Run the database seeder
         if (!context.Clients.Any())
         {
-            var faker = new Faker<Client>("pt_BR")
-                .RuleFor(c => c.Name, f => f.Company.CompanyName())
-                .RuleFor(c => c.Email, f => f.Internet.Email())
-                .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
+            var faker = new Faker<Client>("pt_BR")                
                 .RuleFor(c => c.PersonType, f => f.PickRandom(new[] { "Jurídica", "Física" }))
-                .RuleFor(c => c.DocumentNumber, (f, c) => c.PersonType == "Física" ? f.Random.Number(11).ToString() : f.Random.Number(14).ToString())
-                .RuleFor(c => c.InscricaoEstadual, f => f.Random.AlphaNumeric(12))
-                .RuleFor(c => c.Gender, (f, c) => c.PersonType == "Física" ? f.Person.Gender.ToString() : null)
+                .RuleFor(c => c.DocumentNumber, (f, c) => Regex.Replace(c.PersonType == "Física" ? f.Person.Cpf() : f.Company.Cnpj(), @"[^\d]", ""))
+                .RuleFor(c => c.Gender, (f, c) => c.PersonType == "Física" ? (f.Person.Gender.Equals("Male") ? "Masculino" : "Feminino") : "")
                 .RuleFor(c => c.BirthDate, (f, c) => c.PersonType == "Física" ? f.Date.Past(50, DateTime.Today.AddYears(-18)) : null)
-                .RuleFor(c => c.Password, f => f.Internet.Password())
-                .RuleFor(c => c.ConfirmPassword, (f, c) => c.Password)
-                .RuleFor(c => c.InscricaoEstadualPF, f => f.Random.Bool());
+                .RuleFor(c => c.Name, (f, c) => c.PersonType == "Física" ? f.Name.FullName(f.Person.Gender) : f.Company.CompanyName())
+                .RuleFor(c => c.Email, f => f.Internet.Email())
+                .RuleFor(c => c.Phone, f => Regex.Replace(f.Phone.PhoneNumberFormat(), @"[^\d]", ""))
+                .RuleFor(c => c.Password, f => BCrypt.Net.BCrypt.HashPassword(f.Internet.Password()))                
+                .RuleFor(c => c.InscricaoEstadualPF, (f, c) => c.PersonType == "Física" ? f.Random.Bool() : false)
+                .RuleFor(c => c.InscricaoEstadual, (f, c) => (c.PersonType == "Jurídica" || c.InscricaoEstadualPF ? string.Join("", f.Random.Digits(12)) : ""));
 
             var clients = faker.Generate(30);
 

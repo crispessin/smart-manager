@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartManager.Models;
+using System.Reflection.Emit;
 
 namespace SmartManager.Data
 {
@@ -32,6 +33,12 @@ namespace SmartManager.Data
                     }
                 }
             }
+
+
+            builder.Entity<Client>(entity =>
+            {
+                entity.Property(e => e.Password).HasMaxLength(250);
+            });
         }
 
     }
