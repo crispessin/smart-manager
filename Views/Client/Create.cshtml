@@ -1,98 +1,121 @@
 ﻿@model SmartManager.Models.Client
 @{
     ViewData["Title"] = "Cadastrar Cliente";
-    Layout = "_Layout";
+    Layout = "_LayoutSecondary";
 }
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<div>
-    <h2 class="text-center my-4 mg-b-5 mg-b-lg-8">Cadastrar Cliente</h2>
-</div>
+<div class="d-flex justify-content-between p-5">
+    <div class="d-flex justify-content-center align-content-center w-100">
+        <img src="~/images/signup.svg" alt="imagem de registro de cliente" style="width:80%; height:auto" />
+    </div>
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <form asp-action="Create">  
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-3">
-                <label for="Name">Nome Cliente | Razão Social</label>
-                <input asp-for="Name" class="form-control" placeholder="Digite o nome ou a razão social do cliente" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+    <div class="d-flex justify-items-center align-items-center w-100">
+        <div class="card shadow p-5 border-0 ">
+            <h2 class="text-center mb-4 fw-bold">Cadastrar Cliente</h2>
+            <form asp-action="Create" class="w-100">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label for="Name">Nome Cliente | Razão Social</label>
+                    <input asp-for="Name" class="form-control" placeholder="Digite o nome ou a razão social do cliente" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
 
-            <div class="form-group mb-3">
-                <label for="Email">E-mail</label>
-                <input asp-for="Email" class="form-control" placeholder="Digite o e-mail do cliente" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label for="Email">E-mail</label>
+                    <input asp-for="Email" class="form-control" placeholder="Digite o e-mail do cliente" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
 
-            <div class="form-group mb-3">
-                <label for="Phone">Contato</label>
-                <input asp-for="Phone" class="form-control" placeholder="Digite o contato do cliente" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="Phone">Contato</label>
+                        <input asp-for="Phone" class="form-control" placeholder="Digite o contato do cliente" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label for="PersonType">Tipo Pessoa</label>
+                        <select asp-for="PersonType" class="form-control" id="PersonType">
+                            <option value="">Selecione o tipo...</option>
+                            <option value="Jurídica">Jurídica</option>
+                            <option value="Física">Física</option>
+                        </select>
+                        <span asp-validation-for="PersonType" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label for="DocumentNumber">CPF/CNPJ</label>
+                        <input asp-for="DocumentNumber" class="form-control" id="DocumentNumber" placeholder="Digite o documento do cliente" required />
+                        <span asp-validation-for="DocumentNumber" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <div class="form-group mb-3">
-                <label for="PersonType">Tipo Pessoa</label>
-                <select asp-for="PersonType" class="form-control" id="PersonType">
-                    <option value="">Selecione o tipo...</option>
-                    <option value="Jurídica">Jurídica</option>
-                    <option value="Física">Física</option>
-                </select>
-                <span asp-validation-for="PersonType" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group mb-3">
-                <label for="DocumentNumber">Cpf/Cnpj</label>
-                <input asp-for="DocumentNumber" class="form-control" id="DocumentNumber" placeholder="Digite o documento do cliente" required />
-                <span asp-validation-for="DocumentNumber" class="text-danger"></span>
-            </div>
+                <div class="row mb-3" id="GenderContainer" style="display:none;">
+                    <div class="col">
+                        <label for="Gender">Gênero</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">Selecione o gênero...</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label for="BirthDate">Data de Nascimento</label>
+                        <input asp-for="BirthDate" class="form-control" type="date" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <div class="form-group mb-3" id="GenderContainer" style="display:none;">
-                <label for="Gender">Gênero</label>
-                <select asp-for="Gender" class="form-control">
-                    <option value="">Selecione o gênero...</option>
-                    <option value="Feminino">Feminino</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Outro">Outro</option>
-                </select>
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
+                <div class="mb-3" id="InscricaoEstadualRequiredContainer">
+                    <input type="checkbox" asp-for="InscricaoEstadualPF" id="InscricaoEstadualPF" class="form-check-input" />
+                    <label for="InscricaoEstadualPF">Inscrição Estadual para Pessoa Física</label>
+                </div>
 
-            <div class="form-group mb-3" id="BirthDateContainer" style="display:none;">
-                <label for="BirthDate">Data de Nascimento</label>
-                <input asp-for="BirthDate" class="form-control" type="date" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
+                <div class="mb-3" id="InscricaoEstadualContainer">
+                    <label for="InscricaoEstadual">Inscrição Estadual</label>
+                    <input asp-for="InscricaoEstadual" class="form-control" placeholder="Digite a Inscrição Estadual do cliente" />
+                    <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
+                </div>
 
-            <div class="form-group mb-3" id="InscricaoEstadualRequiredContainer">
-                <input type="checkbox" asp-for="InscricaoEstadualPF" id="InscricaoEstadualPF" />
-                <label for="InscricaoEstadualPF">Inscrição Estadual para Pessoa Física</label>
-            </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" asp-for="InscricaoEstadualIsento" id="InscricaoEstadualIsento" class="form-check-input" />
+                        <label for="Isento" class="form-check-label">Isento</label>
+                    </div>
+                </div>
 
-            <div class="form-group mb-3" id="InscricaoEstadualContainer">
-                <label for="InscricaoEstadual">Inscrição Estadual</label>
-                <input asp-for="InscricaoEstadual" class="form-control" placeholder="Digite a Inscrição Estadual do cliente" />
-                <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" asp-for="IsBlocked" id="IsBlocked" class="form-check-input" />
+                        <label for="IsBlocked">Cliente Bloqueado</label>
+                    </div>
+                </div>
 
-            <div class="form-group mb-3">
-                <label for="Password">Senha</label>
-                <input asp-for="Password" class="form-control" type="password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+                <div class="row mb-3">                    
+                    <div class="col">
+                        <label for="Password">Senha de Acesso</label>
+                        <input asp-for="Password" class="form-control" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group mb-3">
-                <label for="ConfirmPassword">Confirmação de Senha</label>
-                <input asp-for="ConfirmPassword" class="form-control" type="password" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
+                    <div class="col">
+                        <label for="ConfirmPassword">Confirmação de Senha</label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <button type="submit" class="btn btn-success btn-lg">Adicionar</button>
-            <a class="btn btn-secondary btn-lg" asp-controller="Client" asp-action="Index" role="button">Voltar</a>
-        </form>
+                <div class="d-flex justify-content-center align-content-center mt-4" style="gap:8px">
+                    <a class="btn btn-light" asp-controller="Client" asp-action="Index" role="button">Voltar</a>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -101,37 +124,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
         $(document).ready(function ($) {
+            function showOrHideIEContainer() {
+                if ($('#InscricaoEstadualPF').is(':checked') || $('#PersonType').val() === 'Jurídica') {
+                    $('#InscricaoEstadualContainer').show();
+                } else {
+                    $('#InscricaoEstadual').val('');
+                    $('#InscricaoEstadualContainer').hide();
+                }
+            }
+
+            function toggleInscricaoEstadual() {
+                if ($('#InscricaoEstadualIsento').is(':checked')) {
+                    $('#InscricaoEstadual').val('');
+                    $('#InscricaoEstadual').prop('disabled', true);
+                } else {
+                    $('#InscricaoEstadual').prop('disabled', false);
+                }
+            }
+
+            $('#InscricaoEstadualPF').change(function () {
+                showOrHideIEContainer();
+            });
+
+            $('#InscricaoEstadualIsento').change(function () {
+                toggleInscricaoEstadual();
+            });
+
             $('#PersonType').change(function () {
                 var documentNumberField = $('#DocumentNumber');
+                var inscricaoEstadualField = $('#InscricaoEstadual');
 
                 if ($(this).val() === 'Física') {
                     $('#GenderContainer').show();
-                    $('#BirthDateContainer').show();
-                    $('#InscricaoEstadualRequiredContainer').show();
-                    $('#InscricaoEstadualContainer').hide();
+                    $('#InscricaoEstadualRequiredContainer').show();                    
+                    showOrHideIEContainer();
                     documentNumberField.mask('000.000.000-00');
+                    inscricaoEstadualField.mask('000.000.000-000');
                 } else {
                     $('#GenderContainer').hide();
-                    $('#BirthDateContainer').hide();
                     $('#InscricaoEstadualRequiredContainer').hide();
-                    $('#InscricaoEstadualContainer').show();                    
+                    showOrHideIEContainer();
                     documentNumberField.mask('00.000.000/0000-00');
+                    inscricaoEstadualField.mask('000.000.000-000');
                 }
             }).trigger('change');
 
-            $('#InscricaoEstadualPF').change(function () {
-                if ($(this).is(':checked')) {                    
-                    $('#InscricaoEstadualContainer').show();
-                } else {                    
-                    $('#InscricaoEstadualContainer').hide();
-                }
-            });
-
-            if ($('#InscricaoEstadualPF').is(':checked')) {
-                $('#InscricaoEstadualContainer').show();
-            } else {
-                $('#InscricaoEstadualContainer').hide();
-            }
+            showOrHideIEContainer();
+            toggleInscricaoEstadual();
 
             $('#ConfirmPassword').on('input', function () {
                 var password = $('#Password').val();

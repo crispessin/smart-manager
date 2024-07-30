@@ -1,45 +1,44 @@
-﻿@model PagedList<SmartManager.Models.Client>
+﻿@model IPagedList<SmartManager.Models.Client>
 @{
     ViewData["Title"] = "Clientes";
     Layout = "_Layout";
-    var search = @ViewData["Search"]?.ToString();
+    var search = ViewData["Search"]?.ToString();
     var searchVisible = !string.IsNullOrEmpty(search);
 }
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center my-5">
     <div>
-        <h3 class="d-inline">Consulte seus Clientes cadastrados em sua Loja ou realize o cadastro de novos Clientes</h3>
+        <h3 class="fw-bold">Clientes</h3>
+        <p class="text-muted">Consulte seus Clientes cadastrados em sua Loja ou realize o cadastro de novos Clientes</p>
     </div>
     <div>
-        <a href="@Url.Action("Create", "Client")" class="btn btn-primary">Adicionar Cliente</a>
-    </div>    
+        <a href="@Url.Action("Create", "Client")" class="btn btn-primary">
+            <i class="bi bi-person-fill-add"></i>
+            Adicionar Cliente
+        </a>
+    </div>
 </div>
 
-<div>
-    <button id="filter-btn" class="btn btn-primary">Filtrar</button>
-</div>
 
-<div id="search-area" style="display:@(searchVisible ? "block" : "none"); margin-top: 15px;">    
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-20">
-                <form method="get" action="@Url.Action("Index", "Client")" class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <label for="search" class="visually-hidden">Pesquisar:</label>
-                        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome para pesquisar" value="@ViewData["Search"]" />
-                    </div>
-                    <button type="submit" class="btn btn-primary ms-2">Pesquisar</button>
-                </form>
+<div class="d-flex justify-content-between align-items-center my-3">
+    <div>
+        <button id="filter-btn" class="btn btn-primary">Filtrar</button>
+    </div>
+    <div id="search-area" style="display:@(searchVisible ? "block" : "none")" class="col ms-2">
+        <form method="get" action="@Url.Action("Index", "Client")" class="d-flex">
+            <div class="input-group">
+                <label for="search" class="visually-hidden">Pesquisar:</label>
+                <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome para pesquisar" value="@ViewData["Search"]"/>
+                <button type="submit" class="btn btn-success ms-2">Pesquisar</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
-<br/>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th><input type="checkbox" id="select-all" /></th>
@@ -71,18 +70,16 @@
     </tbody>
 </table>
 
-<div>
-    <div style="float: right">
-        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
-    </div>
-
-    <div class="justify-content-center">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { FunctionToTransformEachPageLink = (liTag, aTag) => { aTag.Attributes.Add("class", "page-link".ToString()); return aTag; }, LiElementClasses = new[] { "page-item" }, UlElementClasses = new[] { "pagination  justify-content-center" } })
-    </div>
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewData["Search"] }), new PagedListRenderOptions
+{
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    UlElementClasses = new[] { "pagination" }
+})
 </div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#filter-btn').click(function () {

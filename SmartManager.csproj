@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Client\" />
+    <Compile Remove="Views\Client\Index1.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Client\Index1.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

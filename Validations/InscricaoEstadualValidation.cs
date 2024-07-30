@@ -8,22 +8,25 @@ namespace SmartManager
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            string cleanedInscricaoEstadual = Regex.Replace((string) value ?? "", @"[^\d]", "");
             var client = (Client)validationContext.ObjectInstance;
-            
-            if (client.PersonType == "Jurídica" || client.InscricaoEstadualPF)
+
+            if ((client.PersonType == "Jurídica" || client.InscricaoEstadualPF) && !client.InscricaoEstadualIsento)
             {
-                if  (string.IsNullOrWhiteSpace(client.InscricaoEstadual))
+
+                if (string.IsNullOrWhiteSpace(cleanedInscricaoEstadual))
                 {
                     return new ValidationResult("Inscrição Estadual é obrigatória.");
                 }
 
-                if (client.InscricaoEstadual.Length > 12)
+                if (cleanedInscricaoEstadual.Length > 12)
                 {
                     return new ValidationResult("Inscrição Estadual pode ter no máximo 12 caracteres.");
                 }
             }
 
             return ValidationResult.Success;
+
         }
     }
 }

@@ -11,7 +11,7 @@ using SmartManager.Data;
 namespace SmartManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240728004150_InitialCreate")]
+    [Migration("20240730010621_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -29,9 +29,6 @@ namespace SmartManager.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ConfirmPassword")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -47,6 +44,9 @@ namespace SmartManager.Migrations
                     b.Property<string>("InscricaoEstadual")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("InscricaoEstadualIsento")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("InscricaoEstadualPF")
                         .HasColumnType("INTEGER");
 
@@ -59,7 +59,7 @@ namespace SmartManager.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
-                        .HasMaxLength(15)
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PersonType")
